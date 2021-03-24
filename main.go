@@ -22,10 +22,14 @@ func (p *program) Start(s service.Service) error {
 func (p *program) run() {
 	// Do work here
 	http.HandleFunc("/proxy.pac", func(w http.ResponseWriter, r *http.Request) {
+		rAddr := r.RemoteAddr
+		method := r.Method
+		path := r.URL.Path
+		log.Printf("%s [%s] %s\n", rAddr, method, path)
 		http.ServeFile(w, r, "./proxy.pac")
 	})
 
-	//log.Println("Listening...")
+	log.Println("Listening...")
 	http.ListenAndServe(":18080", nil)
 }
 
