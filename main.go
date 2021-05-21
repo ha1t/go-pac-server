@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/kardianos/service"
 )
@@ -26,7 +27,8 @@ func (p *program) run() {
 		method := r.Method
 		path := r.URL.Path
 		log.Printf("%s [%s] %s\n", rAddr, method, path)
-		http.ServeFile(w, r, "./proxy.pac")
+		exepath, _ := os.Executable()
+		http.ServeFile(w, r, filepath.Dir(exepath)+"/proxy.pac")
 	})
 
 	log.Println("Listening...")
